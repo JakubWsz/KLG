@@ -19,7 +19,7 @@ public class Person {
     @Id
     private long id;
     private String firstname;
-    private String Surname;
+    private String surname;
     @Enumerated(EnumType.STRING)
     private PersonType personType;
 }

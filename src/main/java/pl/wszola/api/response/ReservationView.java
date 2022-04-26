@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class ReservationView {
     private final long id;
     private final RentItem rentItem;
-    private final LocalDate RentPeriodStart;
-    private final LocalDate RentPeriodFinish;
+    private final LocalDate rentPeriodStart;
+    private final LocalDate rentPeriodFinish;
     private final Person lessor;
     private final Person renter;
 }
