@@ -1,4 +1,4 @@
-package pl.wszola.domain.persistence;
+package pl.wszola.domain.reservation;
 
 import pl.wszola.infrastructure.entity.Reservation;
 
@@ -9,4 +9,5 @@ public interface ReservationRepository {
     List<Reservation> getAllByRenterId(long Id);
     List<Reservation> getAllByItemId(long Id);
     Reservation save (Reservation reservation);
+    Reservation getByRenterId(long id);
 }

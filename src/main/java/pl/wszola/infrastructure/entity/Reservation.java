@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,6 +16,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String domainId;
     @OneToOne
     private RentItem rentItem;
     private LocalDate rentPeriodStart;
@@ -26,12 +26,14 @@ public class Reservation {
     @OneToOne
     private Person renter;
 
-    public Reservation(RentItem rentItem, LocalDate rentPeriodStart, LocalDate rentPeriodFinish,
+    public Reservation(String domainId,RentItem rentItem, LocalDate rentPeriodStart, LocalDate rentPeriodFinish,
                        Person lessor, Person renter) {
+        this.domainId = domainId;
         this.rentItem = rentItem;
         this.rentPeriodStart = rentPeriodStart;
         this.rentPeriodFinish = rentPeriodFinish;
         this.lessor = lessor;
         this.renter = renter;
     }
+
 }

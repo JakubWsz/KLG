@@ -1,7 +1,7 @@
 package pl.wszola.infrastructure.persistence;
 
 import org.springframework.stereotype.Repository;
-import pl.wszola.domain.persistence.ReservationRepository;
+import pl.wszola.domain.reservation.ReservationRepository;
 import pl.wszola.infrastructure.entity.Reservation;
 
 import java.util.List;
@@ -33,5 +33,10 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     @Override
     public Reservation save(Reservation reservation) {
         return reservationRepositoryJPA.save(reservation);
+    }
+
+    @Override
+    public Reservation getByRenterId(long id) {
+        return reservationRepositoryJPA.getByRenterId(id);
     }
 }

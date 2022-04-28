@@ -11,4 +11,6 @@ public interface ReservationRepositoryJPA extends JpaRepository<Reservation, Lon
     List<Reservation> getAllByRenterId(long renterId);
 
     List<Reservation> getAllByRentItemId(long itemId);
+
+    Reservation getByRenterId(long renterId);
 }

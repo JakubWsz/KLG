@@ -2,42 +2,50 @@ package pl.wszola.api.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.wszola.api.request.MakeReservationRequest;
 import pl.wszola.api.request.UpdateReservationRequest;
 import pl.wszola.api.response.ReservationView;
-import pl.wszola.domain.ReservationService;
+import pl.wszola.domain.reservation.ReservationDomain;
+import pl.wszola.domain.reservation.ReservationService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {
+    private final ReservationService reservationService;
+    private ConversionService conversionService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
     public static final String MAKE_RESERVATION_ENDPOINT = "/make";
-
-    private final ReservationService reservationService;
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
     @PostMapping(MAKE_RESERVATION_ENDPOINT)
-    public ReservationView makeReservation(@RequestBody MakeReservationRequest makeReservation) {
-        LOGGER.info("Starting reservation event {}", makeReservation);
-        return reservationService.makeReservation(
-                makeReservation.getRentItem(),
-                makeReservation.getRentPeriodStart(),
-                makeReservation.getRentPeriodFinish(),
-                makeReservation.getLessor(),
-                makeReservation.getRenter()
+    public ResponseEntity<ReservationView> makeReservation(@RequestBody MakeReservationRequest reservationRequest) {
+        LOGGER.info("Starting reservation event {}", reservationRequest);
+
+        ReservationDomain reservationDomain = reservationService.makeReservation(
+                reservationRequest.getRentItem(),
+                reservationRequest.getRentPeriodStart(),
+                reservationRequest.getRentPeriodFinish(),
+                reservationRequest.getLessor(),
+                reservationRequest.getRenter()
         );
+        return new ResponseEntity<>(conversionService.convert(reservationDomain, ReservationView.class),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/{id}")
-    public ReservationView updateReservation(@RequestBody UpdateReservationRequest changeReservation,
-                                             @PathVariable long id) {
-        return reservationService.updateReservation(changeReservation, id);
+    public ResponseEntity<ReservationView> updateReservation(@RequestBody UpdateReservationRequest changeReservation) {
+        ReservationDomain reservationDomain = reservationService.updateReservation(changeReservation);
+        return new ResponseEntity<>(conversionService.convert(reservationDomain, ReservationView.class),
+                HttpStatus.OK);
     }
 
     @GetMapping("/get-all-renter-reservations/{renterId}")
@@ -49,6 +57,4 @@ public class ReservationController {
     public List<ReservationView> getAllItemReservations(@PathVariable long itemId) {
         return reservationService.getAllReservationsByItemId(itemId);
     }
-
-
 }

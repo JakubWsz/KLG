@@ -1,6 +1,6 @@
 package pl.wszola.mock;
 
-import pl.wszola.domain.persistence.ReservationRepository;
+import pl.wszola.domain.reservation.ReservationRepository;
 import pl.wszola.infrastructure.entity.Reservation;
 
 import java.util.ArrayList;
@@ -14,6 +14,14 @@ public class ReservationRepositoryMock implements ReservationRepository {
     public Reservation save(Reservation reservation) {
         reservations.add(reservation);
         return reservation;
+    }
+
+    @Override
+    public Reservation getByRenterId(long id) {
+        return reservations.stream()
+                .filter(reservation -> id == reservation.getRenter().getId())
+                .findFirst()
+                .get();
     }
 
     @Override
