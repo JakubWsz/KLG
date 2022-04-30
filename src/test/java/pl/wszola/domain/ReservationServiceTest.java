@@ -21,9 +21,9 @@ class ReservationServiceTest {
     private final ReservationValidator validator = new ReservationValidator(repository);
     private final ReservationService reservationService = new ReservationService(repository, validator);
 
-    private static final Person LESSOR = new Person(1, "Jan", "Rodo", PersonType.LESSOR);
-    private static final Person RENTER = new Person(2, "Anrzej", "Bokser", PersonType.RENTER);
-    private static final RentItem RENT_ITEM = new RentItem(3L, "biuro", BigDecimal.valueOf(2700), 35.5);
+    private static final Person LESSOR = new Person("Jan", "Rodo", PersonType.LESSOR);
+    private static final Person RENTER = new Person("Anrzej", "Bokser", PersonType.RENTER);
+    private static final RentItem RENT_ITEM = new RentItem("biuro", BigDecimal.valueOf(2700), 35.5, LESSOR);
     private static final LocalDate RENT_START = LocalDate.of(2022, 6, 12);
     private static final LocalDate RENT_FINISH = LocalDate.of(2022, 6, 17);
 
@@ -32,13 +32,12 @@ class ReservationServiceTest {
     void shouldSetPassedReservationData() {
         //when
         ReservationDomain reservationDomain = reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH,
-                LESSOR, RENTER);
+                RENTER);
 
         //then
         assertEquals(reservationDomain.getRentItem(), RENT_ITEM);
         assertEquals(reservationDomain.getRentPeriodStart(), RENT_START);
         assertEquals(reservationDomain.getRentPeriodFinish(), RENT_FINISH);
-        assertEquals(reservationDomain.getLessor(), LESSOR);
         assertEquals(reservationDomain.getRenter(), RENTER);
     }
 
@@ -46,12 +45,12 @@ class ReservationServiceTest {
     void shouldThrowsExceptionWhenIsDataConflictCase1() {
         //when
         reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 6, 11),
-                LocalDate.of(2022, 6, 13), LESSOR, RENTER);
+                LocalDate.of(2022, 6, 13), RENTER);
 
         //then
         RuntimeException runtimeException = assertThrows(
                 RuntimeException.class,
-                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, LESSOR, RENTER));
+                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, RENTER));
         assertEquals("Date conflict", runtimeException.getMessage());
     }
 
@@ -59,12 +58,12 @@ class ReservationServiceTest {
     void shouldThrowsExceptionWhenIsDataConflictCase2() {
         //when
         reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 5, 1),
-                LocalDate.of(2022, 7, 30), LESSOR, RENTER);
+                LocalDate.of(2022, 7, 30), RENTER);
 
         //then
         RuntimeException runtimeException = assertThrows(
                 RuntimeException.class,
-                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, LESSOR, RENTER));
+                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, RENTER));
         assertEquals("Date conflict", runtimeException.getMessage());
     }
 
@@ -73,12 +72,12 @@ class ReservationServiceTest {
         //when
 
         reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 6, 14),
-                LocalDate.of(2022, 6, 24), LESSOR, RENTER);
+                LocalDate.of(2022, 6, 24), RENTER);
 
         //then
         RuntimeException runtimeException = assertThrows(
                 RuntimeException.class,
-                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, LESSOR, RENTER));
+                () -> reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, RENTER));
         assertEquals("Date conflict", runtimeException.getMessage());
     }
 
@@ -94,21 +93,19 @@ class ReservationServiceTest {
                 RENTER);
 
         //when
-        ReservationDomain reservation = reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH,
-                LESSOR, RENTER);
+        ReservationDomain reservation = reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH, RENTER);
 
         ReservationDomain updatedReservation = reservationService.updateReservation(updateReservationRequest);
 
         //then
         assertNotNull(updatedReservation);
-        assertNotEquals(updatedReservation,reservation);
+        assertNotEquals(updatedReservation, reservation);
         assertNotEquals(updateReservationRequest.getRentPeriodFinish(), reservation.getRentPeriodFinish());
         assertNotEquals(updatedReservation.getRentPeriodStart(), reservation.getRentPeriodStart());
         assertEquals(updateReservationRequest.getRentPeriodStart(), updateRentPeriodStart);
         assertEquals(updateReservationRequest.getRentPeriodFinish(), updateRentPeriodFinish);
-        assertEquals(updatedReservation.getDomainId(),reservation.getDomainId());
-        assertEquals(updatedReservation.getRentItem(),reservation.getRentItem());
-        assertEquals(updatedReservation.getRenter(),reservation.getRenter());
-        assertEquals(updatedReservation.getLessor(),reservation.getLessor());
+        assertEquals(updatedReservation.getDomainId(), reservation.getDomainId());
+        assertEquals(updatedReservation.getRentItem(), reservation.getRentItem());
+        assertEquals(updatedReservation.getRenter(), reservation.getRenter());
     }
 }

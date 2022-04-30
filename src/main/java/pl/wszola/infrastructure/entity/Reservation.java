@@ -1,6 +1,5 @@
 package pl.wszola.infrastructure.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
     private String domainId;
     @OneToOne
@@ -22,17 +21,14 @@ public class Reservation {
     private LocalDate rentPeriodStart;
     private LocalDate rentPeriodFinish;
     @OneToOne
-    private Person lessor;
-    @OneToOne
     private Person renter;
 
-    public Reservation(String domainId,RentItem rentItem, LocalDate rentPeriodStart, LocalDate rentPeriodFinish,
-                       Person lessor, Person renter) {
+    public Reservation(String domainId,RentItem rentItem, LocalDate rentPeriodStart,
+                       LocalDate rentPeriodFinish, Person renter) {
         this.domainId = domainId;
         this.rentItem = rentItem;
         this.rentPeriodStart = rentPeriodStart;
         this.rentPeriodFinish = rentPeriodFinish;
-        this.lessor = lessor;
         this.renter = renter;
     }
 

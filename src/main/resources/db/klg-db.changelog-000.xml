@@ -3,13 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet author="wszola" id="000">
-        <sqlFile path="db/sql/klg-db.changelog-000-rent-item.sql"/>
-    </changeSet>
     <changeSet author="wszola" id="001">
-        <sqlFile path="db/sql/klg-db.changelog-000-person.sql"/>
-    </changeSet>
-    <changeSet author="wszola" id="002">
-        <sqlFile path="db/sql/klg-db.changelog-000-reservation.sql"/>
+        <sqlFile path="db/sql/klg-db.changelog-000.sql"/>
     </changeSet>
 </databaseChangeLog>

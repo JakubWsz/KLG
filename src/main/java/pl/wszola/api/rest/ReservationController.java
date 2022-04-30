@@ -35,7 +35,6 @@ public class ReservationController {
                 reservationRequest.getRentItem(),
                 reservationRequest.getRentPeriodStart(),
                 reservationRequest.getRentPeriodFinish(),
-                reservationRequest.getLessor(),
                 reservationRequest.getRenter()
         );
         return new ResponseEntity<>(conversionService.convert(reservationDomain, ReservationView.class),

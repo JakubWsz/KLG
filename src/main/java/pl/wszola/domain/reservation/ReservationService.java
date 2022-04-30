@@ -21,11 +21,11 @@ public class ReservationService {
     }
 
     public ReservationDomain makeReservation(RentItem rentItem, LocalDate rentPeriodStart,
-                                             LocalDate rentPeriodFinish, Person lessor, Person renter) {
+                                             LocalDate rentPeriodFinish, Person renter) {
         reservationValidator.validateReservationDateConflicts(rentPeriodStart, rentPeriodFinish, rentItem.getId());
 
         ReservationDomain reservationDomain = new ReservationDomain(UUID.randomUUID().toString(), rentItem,
-                rentPeriodStart, rentPeriodFinish, lessor, renter);
+                rentPeriodStart, rentPeriodFinish, renter);
         return reservationRepository.save(reservationDomain);
     }
 
@@ -39,7 +39,6 @@ public class ReservationService {
                 reservation.getRentItem(),
                 updateReservation.getRentPeriodStart(),
                 updateReservation.getRentPeriodFinish(),
-                reservation.getLessor(),
                 reservation.getRenter()
         );
         reservationRepository.save(updatedReservation);

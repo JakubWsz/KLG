@@ -1,4 +1,4 @@
-package pl.wszola.infrastructure.persistence;
+package pl.wszola.infrastructure.persistence.reservation;
 
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Repository;

@@ -59,7 +59,6 @@ public class ReservationRepositoryMock implements ReservationRepository {
                 reservation.getRentItem(),
                 reservation.getRentPeriodStart(),
                 reservation.getRentPeriodFinish(),
-                reservation.getLessor(),
                 reservation.getRenter()
         );
     }
@@ -70,7 +69,6 @@ public class ReservationRepositoryMock implements ReservationRepository {
                 reservationDomain.getRentItem(),
                 reservationDomain.getRentPeriodStart(),
                 reservationDomain.getRentPeriodFinish(),
-                reservationDomain.getLessor(),
                 reservationDomain.getRenter()
         );
     }

@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class UpdateReservationRequest {
-    private RentItem rentItem;
-    private LocalDate RentPeriodStart;
-    private LocalDate RentPeriodFinish;
-    private Person renter;
+    private final RentItem rentItem;
+    private final LocalDate RentPeriodStart;
+    private final LocalDate RentPeriodFinish;
+    private final Person renter;
 }

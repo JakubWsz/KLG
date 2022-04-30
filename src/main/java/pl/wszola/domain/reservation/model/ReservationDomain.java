@@ -17,7 +17,6 @@ public class ReservationDomain {
     private RentItem rentItem;
     private LocalDate rentPeriodStart;
     private LocalDate rentPeriodFinish;
-    private Person lessor;
     private Person renter;
 
 }
