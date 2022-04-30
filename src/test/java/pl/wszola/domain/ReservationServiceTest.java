@@ -1,16 +1,14 @@
 package pl.wszola.domain;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.convert.ConversionService;
-import pl.wszola.api.response.ReservationView;
-import pl.wszola.domain.reservation.ReservationDomain;
+import pl.wszola.api.request.UpdateReservationRequest;
 import pl.wszola.domain.reservation.ReservationRepository;
 import pl.wszola.domain.reservation.ReservationService;
-import pl.wszola.infrastructure.converter.ReservationDomainToReservation;
+import pl.wszola.domain.reservation.model.ReservationDomain;
+import pl.wszola.domain.reservation.validator.ReservationValidator;
 import pl.wszola.infrastructure.entity.Person;
 import pl.wszola.infrastructure.entity.PersonType;
 import pl.wszola.infrastructure.entity.RentItem;
-import pl.wszola.infrastructure.entity.Reservation;
 import pl.wszola.mock.ReservationRepositoryMock;
 
 import java.math.BigDecimal;
@@ -20,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationServiceTest {
     private final ReservationRepository repository = new ReservationRepositoryMock();
-    private final ReservationService reservationService = new ReservationService(repository);
+    private final ReservationValidator validator = new ReservationValidator(repository);
+    private final ReservationService reservationService = new ReservationService(repository, validator);
 
     private static final Person LESSOR = new Person(1, "Jan", "Rodo", PersonType.LESSOR);
     private static final Person RENTER = new Person(2, "Anrzej", "Bokser", PersonType.RENTER);
@@ -34,7 +33,7 @@ class ReservationServiceTest {
         //when
         ReservationDomain reservationDomain = reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH,
                 LESSOR, RENTER);
-        
+
         //then
         assertEquals(reservationDomain.getRentItem(), RENT_ITEM);
         assertEquals(reservationDomain.getRentPeriodStart(), RENT_START);
@@ -46,7 +45,6 @@ class ReservationServiceTest {
     @Test
     void shouldThrowsExceptionWhenIsDataConflictCase1() {
         //when
-
         reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 6, 11),
                 LocalDate.of(2022, 6, 13), LESSOR, RENTER);
 
@@ -60,9 +58,8 @@ class ReservationServiceTest {
     @Test
     void shouldThrowsExceptionWhenIsDataConflictCase2() {
         //when
-
-        reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 6, 1),
-                LocalDate.of(2022, 6, 31), LESSOR, RENTER);
+        reservationService.makeReservation(RENT_ITEM, LocalDate.of(2022, 5, 1),
+                LocalDate.of(2022, 7, 30), LESSOR, RENTER);
 
         //then
         RuntimeException runtimeException = assertThrows(
@@ -85,27 +82,33 @@ class ReservationServiceTest {
         assertEquals("Date conflict", runtimeException.getMessage());
     }
 
+    @Test
+    void domainReservationShouldBeUpdated() {
+        //given
+        LocalDate updateRentPeriodStart = LocalDate.of(2022, 7, 4);
+        LocalDate updateRentPeriodFinish = LocalDate.of(2022, 7, 16);
 
-    private Reservation mapReservationViewToReservation(ReservationView reservationView) {
-        return new Reservation(
-                reservationView.getDomainId(),
-                reservationView.getRentItem(),
-                reservationView.getRentPeriodStart(),
-                reservationView.getRentPeriodFinish(),
-                reservationView.getLessor(),
-                reservationView.getRenter()
-        );
+        UpdateReservationRequest updateReservationRequest = new UpdateReservationRequest(RENT_ITEM,
+                updateRentPeriodStart,
+                updateRentPeriodFinish,
+                RENTER);
+
+        //when
+        ReservationDomain reservation = reservationService.makeReservation(RENT_ITEM, RENT_START, RENT_FINISH,
+                LESSOR, RENTER);
+
+        ReservationDomain updatedReservation = reservationService.updateReservation(updateReservationRequest);
+
+        //then
+        assertNotNull(updatedReservation);
+        assertNotEquals(updatedReservation,reservation);
+        assertNotEquals(updateReservationRequest.getRentPeriodFinish(), reservation.getRentPeriodFinish());
+        assertNotEquals(updatedReservation.getRentPeriodStart(), reservation.getRentPeriodStart());
+        assertEquals(updateReservationRequest.getRentPeriodStart(), updateRentPeriodStart);
+        assertEquals(updateReservationRequest.getRentPeriodFinish(), updateRentPeriodFinish);
+        assertEquals(updatedReservation.getDomainId(),reservation.getDomainId());
+        assertEquals(updatedReservation.getRentItem(),reservation.getRentItem());
+        assertEquals(updatedReservation.getRenter(),reservation.getRenter());
+        assertEquals(updatedReservation.getLessor(),reservation.getLessor());
     }
-
-    private Reservation convertReservationDomainToReservation(ReservationDomain reservationDomain) {
-        return new Reservation(
-                reservationDomain.getDomainId(),
-                reservationDomain.getRentItem(),
-                reservationDomain.getRentPeriodStart(),
-                reservationDomain.getRentPeriodFinish(),
-                reservationDomain.getLessor(),
-                reservationDomain.getRenter()
-        );
-    }
-
 }

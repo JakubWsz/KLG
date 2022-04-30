@@ -1,4 +1,4 @@
-package pl.wszola.domain.reservation;
+package pl.wszola.domain.reservation.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 public class ReservationDomain {
     private String domainId;
     private RentItem rentItem;

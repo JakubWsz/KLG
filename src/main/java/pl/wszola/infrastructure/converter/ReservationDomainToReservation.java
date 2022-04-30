@@ -1,7 +1,7 @@
 package pl.wszola.infrastructure.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import pl.wszola.domain.reservation.ReservationDomain;
+import pl.wszola.domain.reservation.model.ReservationDomain;
 import pl.wszola.infrastructure.entity.Reservation;
 
 public class ReservationDomainToReservation implements Converter<ReservationDomain,Reservation> {

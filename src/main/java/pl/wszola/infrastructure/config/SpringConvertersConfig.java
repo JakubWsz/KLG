@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.wszola.infrastructure.converter.ReservationDomainToReservation;
 import pl.wszola.infrastructure.converter.ReservationDomainToReservationView;
 import pl.wszola.infrastructure.converter.ReservationToReservationDomain;
-import pl.wszola.infrastructure.converter.ReservationToReservationView;
 
 @Configuration
 public class SpringConvertersConfig implements WebMvcConfigurer {
@@ -16,6 +15,5 @@ public class SpringConvertersConfig implements WebMvcConfigurer {
         registry.addConverter(new ReservationDomainToReservation());
         registry.addConverter(new ReservationDomainToReservationView());
         registry.addConverter(new ReservationToReservationDomain());
-        registry.addConverter(new ReservationToReservationView());
     }
 }
