@@ -1,7 +1,7 @@
 package pl.wszola.domain;
 
 import org.junit.jupiter.api.Test;
-import pl.wszola.api.request.UpdateReservationRequest;
+import pl.wszola.api.request.ReservationRequest;
 import pl.wszola.domain.reservation.ReservationRepository;
 import pl.wszola.domain.reservation.ReservationService;
 import pl.wszola.domain.reservation.model.ReservationDomain;
@@ -13,6 +13,7 @@ import pl.wszola.mock.ReservationRepositoryMock;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,9 +22,12 @@ class ReservationServiceTest {
     private final ReservationValidator validator = new ReservationValidator(repository);
     private final ReservationService reservationService = new ReservationService(repository, validator);
 
-    private static final Person LESSOR = new Person("Jan", "Rodo", PersonType.LESSOR);
-    private static final Person RENTER = new Person("Anrzej", "Bokser", PersonType.RENTER);
-    private static final RentItem RENT_ITEM = new RentItem("biuro", BigDecimal.valueOf(2700), 35.5, LESSOR);
+    private static final Person LESSOR = new Person(UUID.randomUUID().toString(),
+            "Jan", "Rodo", PersonType.LESSOR);
+    private static final Person RENTER = new Person(UUID.randomUUID().toString(),
+            "Anrzej", "Bokser", PersonType.RENTER);
+    private static final RentItem RENT_ITEM = new RentItem(UUID.randomUUID().toString(),
+            "biuro", BigDecimal.valueOf(2700), 35.5, LESSOR);
     private static final LocalDate RENT_START = LocalDate.of(2022, 6, 12);
     private static final LocalDate RENT_FINISH = LocalDate.of(2022, 6, 17);
 
@@ -87,7 +91,7 @@ class ReservationServiceTest {
         LocalDate updateRentPeriodStart = LocalDate.of(2022, 7, 4);
         LocalDate updateRentPeriodFinish = LocalDate.of(2022, 7, 16);
 
-        UpdateReservationRequest updateReservationRequest = new UpdateReservationRequest(RENT_ITEM,
+       ReservationRequest updateReservationRequest = new ReservationRequest(RENT_ITEM,
                 updateRentPeriodStart,
                 updateRentPeriodFinish,
                 RENTER);

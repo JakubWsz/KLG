@@ -5,12 +5,12 @@ import pl.wszola.infrastructure.entity.Reservation;
 
 import java.util.List;
 
-public interface ReservationRepositoryJPA extends JpaRepository<Reservation, Long> {
-    Reservation getById(long id);
+public interface ReservationRepositoryJPA extends JpaRepository<Reservation, String> {
+    Reservation getById(String id);
 
-    List<Reservation> getAllByRenterId(long renterId);
+    List<Reservation> getAllByRenterId(String renterId);
 
-    List<Reservation> getAllByRentItemId(long itemId);
+    List<Reservation> getAllByRentItemId(String itemId);
 
-    Reservation getByRenterId(long renterId);
+    Reservation getByRenterId(String renterId);
 }

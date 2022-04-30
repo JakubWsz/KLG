@@ -1,6 +1,6 @@
 package pl.wszola.domain.reservation;
 
-import pl.wszola.api.request.UpdateReservationRequest;
+import pl.wszola.api.request.ReservationRequest;
 import pl.wszola.domain.reservation.model.ReservationDomain;
 import pl.wszola.domain.reservation.validator.ReservationValidator;
 import pl.wszola.infrastructure.entity.Person;
@@ -29,7 +29,7 @@ public class ReservationService {
         return reservationRepository.save(reservationDomain);
     }
 
-    public ReservationDomain updateReservation(UpdateReservationRequest updateReservation) {
+    public ReservationDomain updateReservation(ReservationRequest updateReservation) {
         reservationValidator.validateReservationDateConflicts(updateReservation.getRentPeriodStart(),
                 updateReservation.getRentPeriodFinish(), updateReservation.getRentItem().getId());
 
@@ -45,11 +45,11 @@ public class ReservationService {
         return updatedReservation;
     }
 
-    public List<ReservationDomain> getAllReservationsByItemId(long id) {
-        return reservationRepository.getAllByItemId(id);
+    public List<ReservationDomain> getAllReservationsByItemId(String itemId) {
+        return reservationRepository.getAllByItemId(itemId);
     }
 
-    public List<ReservationDomain> getAllReservationsByRenterId(long id) {
-        return reservationRepository.getAllByRenterId(id);
+    public List<ReservationDomain> getAllReservationsByRenterId(String renterId) {
+        return reservationRepository.getAllByRenterId(renterId);
     }
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
-public class MakeReservationRequest {
+public class ReservationRequest {
     private final RentItem rentItem;
     private final LocalDate RentPeriodStart;
     private final LocalDate RentPeriodFinish;

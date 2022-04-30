@@ -6,8 +6,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.wszola.api.request.MakeReservationRequest;
-import pl.wszola.api.request.UpdateReservationRequest;
+import pl.wszola.api.request.ReservationRequest;
 import pl.wszola.api.response.ReservationView;
 import pl.wszola.domain.reservation.model.ReservationDomain;
 import pl.wszola.domain.reservation.ReservationService;
@@ -28,7 +27,7 @@ public class ReservationController {
     }
 
     @PostMapping("/make")
-    public ResponseEntity<ReservationView> makeReservation(@RequestBody MakeReservationRequest reservationRequest) {
+    public ResponseEntity<ReservationView> makeReservation(@RequestBody ReservationRequest reservationRequest) {
         LOGGER.info("Starting reservation {}", reservationRequest);
 
         ReservationDomain reservationDomain = reservationService.makeReservation(
@@ -42,7 +41,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/update/")
-    public ResponseEntity<ReservationView> updateReservation(@RequestBody UpdateReservationRequest changeReservation) {
+    public ResponseEntity<ReservationView> updateReservation(@RequestBody ReservationRequest changeReservation) {
         LOGGER.info("Starting update reservation {}", changeReservation);
 
         ReservationDomain reservationDomain = reservationService.updateReservation(changeReservation);
@@ -51,13 +50,13 @@ public class ReservationController {
     }
 
     @GetMapping("/get-all-renter-reservations/{renterId}")
-    public List<ReservationView> getAllRenterReservations(@PathVariable long renterId) {
+    public List<ReservationView> getAllRenterReservations(@PathVariable String renterId) {
         LOGGER.info("Starting get renter reservation reservation list event {}", renterId);
         return mapReservationListToReservationViewList(reservationService.getAllReservationsByRenterId(renterId));
     }
 
     @GetMapping("/get-all-item-reservations/{itemId}")
-    public List<ReservationView> getAllItemReservations(@PathVariable long itemId) {
+    public List<ReservationView> getAllItemReservations(@PathVariable String itemId) {
         LOGGER.info("Starting get renter reservation reservation list event {}", itemId);
         return mapReservationListToReservationViewList(reservationService.getAllReservationsByItemId(itemId));
     }

@@ -8,6 +8,7 @@ import pl.wszola.infrastructure.entity.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ReservationRepositoryAdapter implements ReservationRepository {
@@ -21,28 +22,28 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     }
 
     @Override
-    public Reservation getById(long id) {
+    public Reservation getById(String id) {
         return reservationRepositoryJPA.getById(id);
     }
 
     @Override
-    public List<ReservationDomain> getAllByRenterId(long id) {
+    public List<ReservationDomain> getAllByRenterId(String id) {
         return mapReservationListToReservationDomainList(reservationRepositoryJPA.getAllByRenterId(id));
     }
 
     @Override
-    public List<ReservationDomain> getAllByItemId(long id) {
+    public List<ReservationDomain> getAllByItemId(String id) {
         return mapReservationListToReservationDomainList(reservationRepositoryJPA.getAllByRentItemId(id));
     }
 
     @Override
     public ReservationDomain save(ReservationDomain reservationDomain) {
-        reservationRepositoryJPA.save(conversionService.convert(reservationDomain, Reservation.class));
+        reservationRepositoryJPA.save(conversionService.convert(reservationDomain,Reservation.class));
         return reservationDomain;
     }
 
     @Override
-    public Reservation getByRenterId(long id) {
+    public Reservation getByRenterId(String id) {
         return reservationRepositoryJPA.getByRenterId(id);
     }
 

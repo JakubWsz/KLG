@@ -6,9 +6,9 @@ import pl.wszola.infrastructure.entity.Reservation;
 import java.util.List;
 
 public interface ReservationRepository {
-    Reservation getById(long id);
-    List<ReservationDomain> getAllByRenterId(long Id);
-    List<ReservationDomain> getAllByItemId(long Id);
+    Reservation getById(String id);
+    List<ReservationDomain> getAllByRenterId(String renterId);
+    List<ReservationDomain> getAllByItemId(String itemId);
     ReservationDomain save (ReservationDomain reservationDomain);
-    Reservation getByRenterId(long id);
+    Reservation getByRenterId(String renterId);
 }

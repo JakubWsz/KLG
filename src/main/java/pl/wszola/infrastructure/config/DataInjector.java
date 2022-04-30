@@ -13,6 +13,7 @@ import pl.wszola.infrastructure.persistence.reservation.ReservationRepositoryJPA
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Configuration
 public class DataInjector {
@@ -20,18 +21,18 @@ public class DataInjector {
     private final ReservationRepositoryJPA reservationRepositoryJPA;
     private final PersonRepositoryJPA personRepositoryJPA;
     private final RentItemRepositoryJPA rentItemRepositoryJPA;
-    private final Person JAN_NOWAK_LESSOR = new Person("Jan","Nowak", PersonType.LESSOR);
-    private final Person JERZY_MAK_LESSOR = new Person("Jerzy","Mak", PersonType.LESSOR);
+    private final Person JAN_NOWAK_LESSOR = new Person("Jan", "Nowak", PersonType.LESSOR);
+    private final Person JERZY_MAK_LESSOR = new Person( "Jerzy", "Mak", PersonType.LESSOR);
     private final Person DANIEL_KWIATKOWSKI_RENTER =
-            new Person("Daniel","Kwiatkowski", PersonType.RENTER);
+            new Person("Daniel", "Kwiatkowski", PersonType.RENTER);
     private final Person IRENEUSZ_KOWALSKI_RENTER =
-            new Person("Ireneusz","Kowalski", PersonType.RENTER);
+            new Person("Ireneusz", "Kowalski", PersonType.RENTER);
     private final RentItem GRZYBOWSKA_OFFICE = new RentItem("Biuro Grzybowksa 17",
-            BigDecimal.valueOf(30000),70, JERZY_MAK_LESSOR);
+            BigDecimal.valueOf(30000), 70, JERZY_MAK_LESSOR);
     private final RentItem POGODNA_OFFICE = new RentItem("Biuro Pogodna 21",
-            BigDecimal.valueOf(30000),70, JERZY_MAK_LESSOR);
+            BigDecimal.valueOf(30000), 70, JERZY_MAK_LESSOR);
     private final RentItem LIPOWA_OFFICE = new RentItem("Biuro Lipowa 17",
-            BigDecimal.valueOf(30000),70, JAN_NOWAK_LESSOR);
+            BigDecimal.valueOf(30000), 70, JAN_NOWAK_LESSOR);
 
     public DataInjector(ReservationRepositoryJPA reservationRepositoryJPA, PersonRepositoryJPA personRepositoryJPA,
                         RentItemRepositoryJPA rentItemRepositoryJPA) {
@@ -41,7 +42,7 @@ public class DataInjector {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void injectPersons(){
+    public void injectPersons() {
         personRepositoryJPA.save(JAN_NOWAK_LESSOR);
         personRepositoryJPA.save(JERZY_MAK_LESSOR);
         personRepositoryJPA.save(DANIEL_KWIATKOWSKI_RENTER);
@@ -49,15 +50,17 @@ public class DataInjector {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void injectRentItems(){
+    public void injectRentItems() {
         rentItemRepositoryJPA.save(GRZYBOWSKA_OFFICE);
         rentItemRepositoryJPA.save(POGODNA_OFFICE);
         rentItemRepositoryJPA.save(LIPOWA_OFFICE);
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void injectReservations(){
-        reservationRepositoryJPA.save(new Reservation("111",POGODNA_OFFICE,
+    public void injectReservations() {
+        reservationRepositoryJPA.save(new Reservation(
+                UUID.randomUUID().toString(),
+                POGODNA_OFFICE,
                 LocalDate.of(2022, 8, 1),
                 LocalDate.of(2023, 7, 31),
                 DANIEL_KWIATKOWSKI_RENTER));

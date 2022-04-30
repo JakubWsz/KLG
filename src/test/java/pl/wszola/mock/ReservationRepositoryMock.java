@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class ReservationRepositoryMock implements ReservationRepository {
     List<Reservation> reservations = new ArrayList<>();
 
-
     @Override
     public ReservationDomain save(ReservationDomain reservationDomain) {
         Reservation reservation = mapReservationDomainToReservation(reservationDomain);
@@ -20,23 +19,23 @@ public class ReservationRepositoryMock implements ReservationRepository {
     }
 
     @Override
-    public Reservation getByRenterId(long id) {
+    public Reservation getByRenterId(String id) {
         return reservations.stream()
-                .filter(reservation -> id == reservation.getRenter().getId())
+                .filter(reservation -> id.equals(reservation.getRenter().getId()))
                 .findFirst()
                 .get();
     }
 
     @Override
-    public Reservation getById(long id) {
+    public Reservation getById(String id) {
         return reservations.stream()
-                .filter(reservation -> id == reservation.getId())
+                .filter(reservation -> id.equals(reservation.getId()))
                 .findFirst()
                 .get();
     }
 
     @Override
-    public List<ReservationDomain> getAllByRenterId(long id) {
+    public List<ReservationDomain> getAllByRenterId(String id) {
         List<ReservationDomain> domainReservations = new ArrayList<>();
         reservations.forEach(reservation -> domainReservations.add(mapReservationToDomainReservation(reservation)));
         return domainReservations.stream()
@@ -45,11 +44,11 @@ public class ReservationRepositoryMock implements ReservationRepository {
     }
 
     @Override
-    public List<ReservationDomain> getAllByItemId(long id) {
+    public List<ReservationDomain> getAllByItemId(String id) {
         List<ReservationDomain> domainReservations = new ArrayList<>();
         reservations.forEach(reservation -> domainReservations.add(mapReservationToDomainReservation(reservation)));
         return domainReservations.stream()
-                .filter(reservationDomain -> reservationDomain.getRentItem().getId() == id)
+                .filter(reservationDomain -> id.equals(reservationDomain.getRentItem().getId()))
                 .collect(Collectors.toList());
     }
 

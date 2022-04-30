@@ -15,7 +15,7 @@ public class ReservationValidator {
         this.reservationRepository = reservationRepository;
     }
 
-    public void validateReservationDateConflicts(LocalDate start, LocalDate finish, long itemId) {
+    public void validateReservationDateConflicts(LocalDate start, LocalDate finish, String itemId) {
         List<ReservationDomain> reservations = reservationRepository.getAllByItemId(itemId);
         for (ReservationDomain reservation : reservations) {
 
