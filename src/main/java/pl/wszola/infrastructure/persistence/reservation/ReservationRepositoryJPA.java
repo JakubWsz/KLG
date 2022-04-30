@@ -1,4 +1,4 @@
-package pl.wszola.infrastructure.persistence;
+package pl.wszola.infrastructure.persistence.reservation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.wszola.infrastructure.entity.Reservation;

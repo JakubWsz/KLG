@@ -13,6 +13,5 @@ public class MakeReservationRequest {
     private final RentItem rentItem;
     private final LocalDate RentPeriodStart;
     private final LocalDate RentPeriodFinish;
-    private final Person lessor;
     private final Person renter;
 }

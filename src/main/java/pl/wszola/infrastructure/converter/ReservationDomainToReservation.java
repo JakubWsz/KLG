@@ -12,8 +12,7 @@ public class ReservationDomainToReservation implements Converter<ReservationDoma
                 reservationDomain.getRentItem(),
                 reservationDomain.getRentPeriodStart(),
                 reservationDomain.getRentPeriodFinish(),
-                reservationDomain.getLessor(),
-                reservationDomain.getLessor()
+                reservationDomain.getRenter()
         );
     }
 }
